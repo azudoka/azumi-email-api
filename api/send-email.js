@@ -4,15 +4,28 @@
 
 export default async function handler(req, res) {
 
+  // CORS — aceita os domínios da Azumi
+  const allowedOrigins = [
+    'https://diagnostico.azumirh.com.br',
+    'https://tools.azumirh.com.br',
+    'http://localhost:3000'
+  ];
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  // Responde o preflight OPTIONS
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   // Só aceita POST
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Método não permitido' });
   }
-
-  // Permite chamada do domínio do formulário
-  res.setHeader('Access-Control-Allow-Origin', 'https://diagnostico.azumirh.com.br');
-  res.setHeader('Access-Control-Allow-Methods', 'POST');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   const { subject, text } = req.body;
 
@@ -28,7 +41,7 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'Azumi RH <diagnostico@azumirh.com.br>',
+        from: 'Azumi RH <onboarding@resend.dev>',
         to: ['patricia@azumirh.com.br'],
         subject: subject,
         text: text,
