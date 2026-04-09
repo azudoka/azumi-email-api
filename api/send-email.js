@@ -1,15 +1,15 @@
 // api/send-email.js
 // Vercel Serverless Function — Azumi RH
-// Recebe os dados do formulário e envia por e-mail via Resend
 
 export default async function handler(req, res) {
 
-  // CORS — aceita os domínios da Azumi
   const allowedOrigins = [
     'https://diagnostico.azumirh.com.br',
     'https://tools.azumirh.com.br',
+    'https://azudoka.github.io',
     'http://localhost:3000'
   ];
+
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
@@ -17,12 +17,10 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  // Responde o preflight OPTIONS
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
 
-  // Só aceita POST
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Método não permitido' });
   }
