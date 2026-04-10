@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   const allowedOrigins = [
     'https://diagnostico.azumirh.com.br',
     'https://tools.azumirh.com.br',
-    'https://azudoka.github.io',
+    'https://azumirh.github.io',
     'http://localhost:3000'
   ];
 
